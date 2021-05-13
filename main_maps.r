@@ -25,17 +25,38 @@ map@data = data.frame(map@data,datos[match(map@data[,"COD_COMUNA"],datos[,"COD_C
 
 pal1 <- colorNumeric("Set3",NULL)
 pal2 <- colorNumeric("Set2",NULL)
+pal3 <- colorNumeric("Set1",NULL)
+pal4 <- colorNumeric("Set2",NULL)
+pal5 <- colorNumeric("Set3",NULL)
+pal6 <- colorNumeric("Set1",NULL)
 
 
-prueba = formatC(map$distrito, big.mark = ",")
-prueba[prueba == '1'] = parse(candidatos, 1, 'Vamos Chile')
+raw_vamos_chile <- map$distrito
+raw_lista_apruebo <- map$distrito
+raw_apruebo_dignidad <- map$distrito
+raw_lista_pueblo <- map$distrito
+raw_lista_independientes <- map$distrito
+raw_lista_otros <- map$distrito
 
-etiqueta_vamos_chile <- as.character(paste0('<b> Distrito ',
-                      map$distrito, ': </b> <br/>',
-                      prueba)) %>% lapply(htmltools::HTML)
+for (i in 1:28){
+  raw_vamos_chile[raw_vamos_chile == i] = parse(candidatos, i, 'Vamos por Chile')
+  raw_lista_apruebo[raw_lista_apruebo == i] = parse(candidatos, i, 'Lista del Apruebo')
+  raw_apruebo_dignidad[raw_apruebo_dignidad == i] = parse(candidatos, i, 'Apruebo Dignidad')
+  raw_lista_pueblo[raw_lista_pueblo == i] = parse(candidatos, i, 'Lista del Pueblo')
+  raw_lista_independientes[raw_lista_independientes == i] = parse(candidatos, i, 'Listas Independientes')
+  raw_lista_otros[raw_lista_otros == i] = parse(candidatos, i, 'Otros')
+
+}
+
+etiqueta_vamos_chile <- etiquetador(map$distrito, raw_vamos_chile)
+etiqueta_lista_apruebo <- etiquetador(map$distrito, raw_lista_apruebo)
+etiqueta_apruebo_dignidad <- etiquetador(map$distrito, raw_apruebo_dignidad)
+etiqueta_lista_pueblo <- etiquetador(map$distrito, raw_lista_pueblo)
+etiqueta_lista_independientes <- etiquetador(map$distrito, raw_lista_independientes)
+etiqueta_lista_otros <- etiquetador(map$distrito, raw_lista_otros)
 
 leyenda_emoji <- c(emoji('heavy_check_mark'), emoji('ok'), emoji('heavy_minus_sign'), emoji('woman_shrugging') ,emoji('question'))
-leyenda_label <- c("Adhiere", "Adhiere con reparos", "No adhiere", "No expresa posición", "Sin respuesta")
+leyenda_label <- c("Adhiere", "Adhiere con reparos", "No adhiere", "No expresa posicion", "Sin respuesta")
 leyenda_full <- paste(leyenda_emoji, leyenda_label)
 
 m <-leaflet(map) %>%
@@ -45,6 +66,7 @@ m <-leaflet(map) %>%
     addTiles() %>%
     setView(-70.657,-33.478,5) %>% 
 	addProviderTiles(providers$OpenStreetMap) %>%
+
 	addPolygons(stroke = FALSE, 
                 smoothFactor = 0.3, 
                 fillOpacity = 0.8,
@@ -56,19 +78,49 @@ m <-leaflet(map) %>%
                 smoothFactor = 0.3, 
                 fillOpacity = 0.8,
     	          fillColor = ~pal2(map$distrito),
-    	          label = ~paste("Distrito:", formatC(map$distrito, big.mark = ","), ": Data de prueba 2", emoji('heavy_multiplication_x')),
+    	          label = etiqueta_lista_apruebo,
                 group = 'Lista del Apruebo') %>%
-    addLayersControl(c("Vamos por Chile", "Lista del Apruebo"), 
+
+  addPolygons(stroke = FALSE, 
+                smoothFactor = 0.3, 
+                fillOpacity = 0.8,
+    	          fillColor = ~pal3(map$distrito),
+    	          label = etiqueta_apruebo_dignidad,
+                group = 'Apruebo Dignidad') %>%
+
+  addPolygons(stroke = FALSE, 
+                smoothFactor = 0.3, 
+                fillOpacity = 0.8,
+    	          fillColor = ~pal4(map$distrito),
+    	          label = etiqueta_lista_pueblo,
+                group = 'Lista del Pueblo') %>%
+
+  addPolygons(stroke = FALSE, 
+                smoothFactor = 0.3, 
+                fillOpacity = 0.8,
+    	          fillColor = ~pal6(map$distrito),
+    	          label = etiqueta_lista_independientes,
+                group = 'Listas Independientes') %>%
+    
+  addPolygons(stroke = FALSE, 
+                smoothFactor = 0.3, 
+                fillOpacity = 0.8,
+    	          fillColor = ~pal6(map$distrito),
+    	          label = etiqueta_lista_otros,
+                group = 'Otros') %>%
+
+  addLayersControl(c("Vamos por Chile", "Lista del Apruebo", "Apruebo Dignidad",
+                        "Lista del Pueblo", "Listas Independientes", "Otros"), 
         options = layersControlOptions(collapsed = FALSE)) %>%
 
-    addLegend(position = "topright", colors = rep('#FFFFFF', 5), 
+  addLegend(position = "topright", colors = rep('#FFFFFF', 5), 
       labels = leyenda_full) %>%
 
-    addLegend(position = "bottomright", colors = c('#FFFFFF'), 
-      labels = '¿Encontraste un error? banco.central.autonomo@gmail.com')
+  addLegend(position = "bottomright", colors = c('#FFFFFF'), 
+      labels = 'Encontraste un error? Reporta en banco.central.autonomo@gmail.com')
 m
 
-saveWidget(m, file="index.html") 
+saveWidget(m, file = "index.html", selfcontained = FALSE, title = 'Mapa de candidatos')
 
 
 
