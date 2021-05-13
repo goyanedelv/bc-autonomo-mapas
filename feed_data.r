@@ -30,4 +30,6 @@ write.xlsx(data, 'candidatos.xlsx')
 
 data$Posicion <- paste0(emoji_col, data$Posicion)
 
+data <- data[,c(1,2,4, 5,3)]
+
 write.xlsx(data, 'candidatos_tabla.xlsx')
