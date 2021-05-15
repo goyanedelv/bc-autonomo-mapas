@@ -26,9 +26,9 @@ map@data = data.frame(map@data,datos[match(map@data[,"COD_COMUNA"],datos[,"COD_C
 pal1 <- colorNumeric("Set3",NULL)
 pal2 <- colorNumeric("Set2",NULL)
 pal3 <- colorNumeric("Set1",NULL)
-pal4 <- colorNumeric("Set2",NULL)
-pal5 <- colorNumeric("Set3",NULL)
-pal6 <- colorNumeric("Set1",NULL)
+pal4 <- colorNumeric("Paired",NULL)
+pal5 <- colorNumeric("Dark2",NULL)
+pal6 <- colorNumeric("Accent",NULL)
 
 
 raw_vamos_chile <- map$distrito
@@ -70,16 +70,16 @@ m <-leaflet(map) %>%
 	addPolygons(stroke = FALSE, 
                 smoothFactor = 0.3, 
                 fillOpacity = 0.8,
-    	          fillColor = ~pal1(map$distrito),
-    	          label = etiqueta_vamos_chile,
-                group = 'Vamos por Chile') %>%
+    	          fillColor = ~pal2(map$distrito),
+    	          label = etiqueta_lista_apruebo,
+                group = 'Lista del Apruebo') %>%
 
 	addPolygons(stroke = FALSE, 
                 smoothFactor = 0.3, 
                 fillOpacity = 0.8,
-    	          fillColor = ~pal2(map$distrito),
-    	          label = etiqueta_lista_apruebo,
-                group = 'Lista del Apruebo') %>%
+    	          fillColor = ~pal1(map$distrito),
+    	          label = etiqueta_vamos_chile,
+                group = 'Vamos por Chile') %>%
 
   addPolygons(stroke = FALSE, 
                 smoothFactor = 0.3, 
@@ -98,7 +98,7 @@ m <-leaflet(map) %>%
   addPolygons(stroke = FALSE, 
                 smoothFactor = 0.3, 
                 fillOpacity = 0.8,
-    	          fillColor = ~pal6(map$distrito),
+    	          fillColor = ~pal5(map$distrito),
     	          label = etiqueta_lista_independientes,
                 group = 'Listas Independientes') %>%
     
@@ -109,7 +109,7 @@ m <-leaflet(map) %>%
     	          label = etiqueta_lista_otros,
                 group = 'Otros') %>%
 
-  addLayersControl(c("Vamos por Chile", "Lista del Apruebo", "Apruebo Dignidad",
+  addLayersControl(c( "Lista del Apruebo", "Vamos por Chile", "Apruebo Dignidad",
                         "Lista del Pueblo", "Listas Independientes", "Otros"), 
         options = layersControlOptions(collapsed = FALSE)) %>%
 
@@ -121,6 +121,7 @@ m <-leaflet(map) %>%
 m
 
 saveWidget(m, file = "index.html", selfcontained = FALSE, title = 'Mapa de candidatos')
+
 
 
 
