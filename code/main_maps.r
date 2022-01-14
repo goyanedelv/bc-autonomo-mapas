@@ -5,7 +5,7 @@ library(openxlsx)
 library(emojifont)
 source('parser.r')
 
-geosonmap <- "Comunas_Chile.json"
+geosonmap <- "data/Comunas_Chile.json"
 
 map = readOGR(geosonmap)
 
@@ -14,9 +14,9 @@ Encoding(map$NOM_COM) <- "UTF-8"
 Encoding(map$NOM_REG) <- "UTF-8" 
 Encoding(map$NOM_PROV) <- "UTF-8" 
 
-datos = read.xlsx("datos.xlsx")
+datos = read.xlsx("data/datos.xlsx")
 
-candidatos = read.xlsx('candidatos.xlsx')
+candidatos = read.xlsx('data/candidatos.xlsx')
 candidatos$Posicion = as.factor(candidatos$Posicion)
 
 datos$comunas = as.factor(datos$comunas)

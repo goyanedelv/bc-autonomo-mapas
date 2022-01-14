@@ -2,7 +2,7 @@ library(googlesheets4)
 library(openxlsx)
 library(emojifont)
 
-link <- 'https://docs.google.com/spreadsheets/d/1pPr5E9SD5ERKJgEEzV89X_TcDVnWk2U24mULpkblTM4/edit#gid=0'
+link <- '...' # censored, google spreadsheet link
 
 data <- read_sheet(link)
 
@@ -13,6 +13,7 @@ data <- merge(data,diccionario_coa)
 data <- merge(data,diccionario_party)
 
 data$Partido <- NULL
+coa_vector <- data$Coalición
 data$Coalición <- NULL
 
 colnames(data)[3] <- 'Posicion'
@@ -26,10 +27,12 @@ df = data.frame(leyenda_emoji)
 rownames(df) <- leyenda_label
 emoji_col <- df[data$Posicion,]
 
-write.xlsx(data, 'candidatos.xlsx')
+write.xlsx(data, 'data/candidatos.xlsx')
 
 data$Posicion <- paste0(emoji_col, data$Posicion)
 
 data <- data[,c(1,2,4, 5,3)]
 
-write.xlsx(data, 'candidatos_tabla.xlsx')
+data$Coalicion <- coa_vector
+
+write.xlsx(data, 'data/candidatos_tabla.xlsx')
