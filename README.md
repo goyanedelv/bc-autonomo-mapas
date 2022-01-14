@@ -1,3 +1,8 @@
 # bc-autonomo-mapas
-Leaflet maps - landscape of support to an independent central bank in Chile
-www.bc-autonomo.cl
+Concención Constitucional de Chile
+
+Leaflet maps, posición de candidatos respecto a la autonomía del Banco Central de Chie
+
+Resultados en: https://goyanedelv.github.io/bc-autonomo/
+
+Proyecto www.bc-autonomo.cl
