@@ -1,5 +1,5 @@
 # bc-autonomo-mapas
-Concención Constitucional de Chile
+Convención Constitucional de Chile
 
 Leaflet maps, posición de candidatos respecto a la autonomía del Banco Central de Chile
 
